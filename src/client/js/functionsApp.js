@@ -1,10 +1,6 @@
-
+//API key for Pixabay
 const pixabayApiKey = '?key=14429196-984aeaa78fd5e3a738036f230'
 const pixabayBaseURL = `https://pixabay.com/api/${pixabayApiKey}&q=`
-
-//Personal API Key for Dark Blue  (weather)
-const darkApiKey = 'ae6ef7c8ff0231dd4f01ee4108e6413b'
-const darkBaseURL = `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${darkApiKey}/`
 
 //API key for WeatherBit
 const wbURL = 'https://api.weatherbit.io/v2.0/forecast/daily'
@@ -22,21 +18,19 @@ const getLocation = async(baseURL, location) =>{
 
     }else {
       const res = await fetch(baseURL + 'country=' + country + '&q=' + city + '&maxRows=1');
+      if(res.ok){
+        console.log('Success from Geoshit');
+      }
       const data = await res.json();
+      const lat = data.geonames[0].lat;
+      const lon = data.geonames[0].lng;
+      const cityName = data.geonames[0].name;
+      const countryName = data.geonames[0].countryName;
 
       document.getElementById('zip_error').style.display = 'none';
       document.getElementById('zip').style.border='none';
-
-      //console.log('test', data, res);
-      await postData('/addGeoData', { 
-        lat:data.geonames[0].lat,
-        lng:data.geonames[0].lng, 
-        country:data.geonames[0].countryName, 
-        city:data.geonames[0].name  
-      } )
-      // show in UI
       
-      await getWeather(darkBaseURL)
+      await getWeather(lat,lon,cityName,countryName);
       await updateUI();
     }    
   }
@@ -52,20 +46,19 @@ const getLocation = async(baseURL, location) =>{
   }
 
   // ########################      Weather    ################################
-  const getWeather = async(darkBaseURL, latitude, longitude) =>{
+  const getWeather = async(lat, lon, city, country) =>{
 
-    const request = await fetch('/allGeoData' );
-    const newData = await request.json();
-    // latitude = document.getElementById('high').innerText;
-    // longitude = document.getElementById('low').innerText;
-    
-    // const res = await fetch(darkBaseURL +  newData[newData.length - 1].lat + ',' + newData[newData.length - 1].lng );
-    const res = await fetch(wbURL+'?lat='+newData[newData.length - 1].lat+'&lon='+newData[newData.length - 1].lng+'&key='+wbKey);
+    //const request = await fetch('/allGeoData' );
+    //const newData = await request.json();
+    // const res = await fetch(`${wbURL}?lat=newData[newData.length-1].lat&lon=newData[newData.length - 1].lng&key=wbKey`);
+    const res = await fetch(`${wbURL}?lat=${lat}&lon=${lon}&key=${wbKey}`);
     const forecast = await res.json();
 
     console.log(forecast);
 
     await postWeather('/addWeatherData', {
+      city: city,
+      country: country,
       high: forecast.data[0].high_temp,
       low: forecast.data[0].low_temp,
       desc: forecast.data[0].weather.description
@@ -119,16 +112,11 @@ const getLocation = async(baseURL, location) =>{
   }
   // UI UPDATE
 const updateUI = async () => {
-    let request = await fetch('/allGeoData');
-    const newData = await request.json();
-
-    request = await fetch('/WeatherData');
+    
+    let request = await fetch('/WeatherData');
     const w = await request.json();
+    console.log(w);
   
-    // console.log("New Data");
-    // console.log(newData);
-    // console.log("Weather Data");
-    // console.log(weathData);
     try{
   
     // Create a new date instance dynamically with JS 
@@ -140,6 +128,7 @@ const updateUI = async () => {
     
     // Today Date
     let newDate = new Date((d.getMonth()+1)+'/'+ d.getDate()+'/'+ d.getFullYear());
+    console.log(departing,newDate);
   
     //Calculate the difference in Time and in Days
     let differencie_in_time = (departing.getTime())-(newDate.getTime());
@@ -150,10 +139,9 @@ const updateUI = async () => {
     document.getElementById('trips-time').innerHTML = `<h3>Departing: ${ departing.getDate()+'.'+(departing.getMonth()+1)+'.'+ departing.getFullYear()}</h3>`;  
     document.getElementById('days').innerHTML = `${difference_in_days}`
   
-    
-    document.getElementsByClassName('city_country')[0].innerHTML = newData[newData.length - 1].city;
-    document.getElementsByClassName('city_country')[1].innerHTML = newData[newData.length - 1].city;
-    document.getElementById('countryCode').innerHTML = newData[newData.length - 1].country;
+    document.getElementsByClassName('city_country')[0].innerHTML = w[w.length - 1].city;
+    document.getElementsByClassName('city_country')[1].innerHTML = w[w.length - 1].city;
+    document.getElementById('countryCode').innerHTML = w[w.length - 1].country;
     document.getElementById('high').innerHTML = w[w.length - 1].high;
     document.getElementById('low').innerHTML = w[w.length - 1].low;
 

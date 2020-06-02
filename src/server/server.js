@@ -51,24 +51,26 @@ app.post("/", function(req, res){
     request(baseURL)
 })
 
-app.post('/addGeoData', post1);
+//app.post('/addGeoData', post1);
 app.post('/addWeatherData', post2);
 
 // Callback function for POST
-function post1(req, res){       
-    newEntry={
-        lat: req.body.lat,
-        lng: req.body.lng,
-        country: req.body.country,
-        city: req.body.city
-    }
-    geoData.push(newEntry)
-    res.send(geoData)
-    console.log(geoData);
-}
+// function post1(req, res){       
+//     newEntry={
+//         lat: req.body.lat,
+//         lng: req.body.lng,
+//         country: req.body.country,
+//         city: req.body.city
+//     }
+//     geoData.push(newEntry)
+//     res.send(geoData)
+//     console.log(geoData);
+// }
 
 function post2(req, res){       
     weatherEntry={
+    	city: req.body.city,
+    	country: req.body.country,
         high: req.body.high,
         low: req.body.low,
         desc: req.body.desc
