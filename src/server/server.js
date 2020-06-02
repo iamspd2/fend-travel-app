@@ -1,5 +1,6 @@
 // Setup empty JS object to act as endpoint for all routes
-projectData = {};
+const geoData = [];
+const weatherData = [];
 
 // Require Express to run server and routes
 const express = require('express');
@@ -23,28 +24,64 @@ app.use(cors());
 app.use(express.static('dist'));
 
 // Spin up the server
-const port = 3000;
+const port = 8080;
 const server = app.listen(port, ()=>{ console.log(`server running on port:${port}`)});
 
 // Initialize all route with a callback function
-app.get('/all', getData);
+app.get('/', function (req, res) {
+    res.status(200).sendFile(path.resolve(__dirname, 'dist/index.html'))
+    
+})
 
-// Callback function to complete GET '/all'
-function getData(req, res) {
-	res.send(JSON.stringify(projectData));
+app.get('/allGeoData', getData);
+app.get('/WeatherData', getWeatherData);
+
+// Callback functions to complete GET '/all'
+function getData(req, res){
+    res.send(geoData)
+}
+
+// Callback functions to complete GET '/all'
+function getWeatherData(req, res){
+    res.send(weatherData)
 }
 
 // Post Route
-app.post('/addData', postData);
+app.post("/", function(req, res){
+    request(baseURL)
+})
 
 // Callback function for POST
-function postData(req, res) {
-	projectData = {
-		date: req.body.date,
-		temp: req.body.temp,
-		content: req.body.content
-	};
-	console.log(projectData);
-	//console.log(JSON.stringify(projectData));
-	res.end();
+app.post('/addGeoData', post1);
+
+function post1(req, res){       
+    newEntry={
+        lat: req.body.lat,
+        lng: req.body.lng,
+        countryName: req.body.countryName,
+        city_country: req.body.city_country
+    }
+    geoData.push(newEntry)
+    res.send(geoData)
+    console.log(geoData);
 }
+
+app.post('/addWeatherData', post2);
+
+function post2(req, res){       
+    weatherEntry={
+        weather :req.body.weather
+    }
+    weatherData.push(weatherEntry)
+    res.send(weatherData)
+    console.log(weatherData);
+};
+
+
+// designates what port the app will listen to for incoming requests
+app.listen(8080, function () {
+    // console.log('Example app listening on port 8080!')
+})
+
+
+module.exports.app = app;
