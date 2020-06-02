@@ -51,9 +51,10 @@ app.post("/", function(req, res){
     request(baseURL)
 })
 
-// Callback function for POST
 app.post('/addGeoData', post1);
+app.post('/addWeatherData', post2);
 
+// Callback function for POST
 function post1(req, res){       
     newEntry={
         lat: req.body.lat,
@@ -66,8 +67,6 @@ function post1(req, res){
     console.log(geoData);
 }
 
-app.post('/addWeatherData', post2);
-
 function post2(req, res){       
     weatherEntry={
         weather :req.body.weather
@@ -79,9 +78,9 @@ function post2(req, res){
 
 
 // designates what port the app will listen to for incoming requests
-app.listen(8080, function () {
-    // console.log('Example app listening on port 8080!')
-})
+// app.listen(8080, function () {
+//     // console.log('Example app listening on port 8080!')
+// })
 
 
 module.exports.app = app;
