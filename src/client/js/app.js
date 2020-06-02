@@ -1,82 +1,40 @@
+'use strict'
+
+import {performAction} from '../js/performAction'
+
 /* Global Variables */
+//Personal API Key for Pixabay  (Photo)
+const pixabayApiKey = '?key=14429196-984aeaa78fd5e3a738036f230'
+const pixabayBaseURL = `https://pixabay.com/api/${pixabayApiKey}&q=`
 
-// Create a new date instance dynamically with JS
-let d = new Date();
-let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
+//Personal API Key for Dark Blue  (weather)
+const darkApiKey = 'ae6ef7c8ff0231dd4f01ee4108e6413b'
+const darkBaseURL = `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${darkApiKey}/`
 
-// Personal API Key for OpenWeatherMap API
-const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-const key = 'edfba7dace18d8e9a41a40fb91152652';
+// Personal API Key for GEONAMES API  (location, lat, low)
+const apiKey = 'username=dominika_ongoing';
+const baseURL = `http://api.geonames.org/searchJSON?${apiKey}&`;
 
-// Event listener to add function to existing HTML DOM element
-document.getElementById('generate').addEventListener('click', generateFeel);
+document.getElementById('generate').addEventListener('click', performAction);
 
-/* Function called by event listener */
-function generateFeel(e){
-    const zip = document.getElementById('zip').value;
-    const feelings = document.getElementById('feelings').value;
-    getTemp(baseURL, zip, key)
-    .then(function (data){
-        // Add data to POST request
-        postData('http://localhost:3000/addData', { date: newDate, temp: data.main.temp, content: feelings } )
-        // Function which updates UI
-        .then(function() {
-            updateUI();
-        })
-    })
+
+// ###################       Add Note      ##################################
+function toggleNotes() {
+  let notes = document.querySelector('.notes');
+    notes.classList.toggle('text-show');
 }
+// toggle (add) note button
+let addbtn = document.getElementById('btn-note');
+addbtn.addEventListener('click', function(){
+  toggleNotes()
+});
 
-/* API call format to get current weather data by zipcode:
-api.openweathermap.org/data/2.5/weather?zip={zip code},{country code}&appid={your api key} */
-
-// Function to GET Web API Data
-const getTemp = async (baseURL, zip, key)=>{
-	// Building full URL for API call with India as country
-    const response = await fetch(baseURL + zip + ',in' + '&appid=' + key)
-    console.log(response);
-    try {
-        const data = await response.json();
-        console.log(data);
-        return data;
-    }
-    catch(error) {
-        console.log('error', error);
-    }
-}
+//  SAVE 
+let note_btn = document.getElementById('text-submit-btn');
+note_btn.addEventListener('click', function(){
+  const note = document.getElementById('text-notes').value;
+  document.getElementById('last-note').innerText =  note;
+  toggleNotes()
+});
 
 
-/* Function to POST data */
-const postData = async (url = '', data = {}) => {
-    const postRequest = await fetch(url, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    });
-    try {
-        const newData = await postRequest.json();
-        console.log(newData);
-        return newData;
-    }
-    catch (error) {
-        console.log(error);
-    }
-}
-
-
-/* Function to GET Project Data */
-// Update user interface
-const updateUI = async () => {
-    const request = await fetch('http://localhost:3000/all');
-    try {
-        const weatherData = await request.json();
-        document.getElementById('date').innerHTML = 'Date: '+weatherData.date;
-        document.getElementById('temp').innerHTML = 'Temperature: '+weatherData.temp+' K or '+(Number(weatherData.temp)-273).toFixed(2)+ ' °C';
-        document.getElementById('content').innerHTML = 'How you feel: '+weatherData.content;
-    }
-    catch (error) {
-        console.log('error', error);
-    }
-}

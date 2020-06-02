@@ -1,0 +1,118 @@
+#app{
+    background-color: #f0cbee;
+    padding: 50px 10px;
+    margin-bottom: 50px;
+    margin-top: 10px;
+    max-width: 1200px;
+    border-radius: 15px;
+    
+    #zip_error{
+        display: none;
+        color: red;
+    }
+
+    .city{
+        font-size: 16px;
+        padding-top: 16px;
+
+        .input-city{
+            font-size: 16px;
+            border-radius: 10px;
+            border: none;
+            padding: 10px 5px;
+            
+            &:hover, &:focus{
+                cursor: pointer;
+            }
+            &:focus{
+                outline: none;
+            }
+        }
+
+    }
+
+
+    .img-trip{
+        min-width: 200px;
+        width: 40%;
+        max-width: 400px;
+        float: left;
+        @media only screen and (max-width: 900px) {
+            clear: both;
+            width: 100%;
+            text-align: center;
+            
+          }
+        // float: left;
+      
+        .image-trip{
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+      }
+
+    }
+
+    .trips{
+        padding: 20px;
+        width: 50%;
+        margin-left: auto;
+    
+        h3{
+            font-size: 20px;
+            padding: 5px;
+        }
+       
+        
+    }
+}
+
+
+.add-notes{
+    margin: 100px 0;
+    
+    a{
+
+        &, &:link{
+
+            color: #000000;
+            border: 2px solid black;
+            border-radius: 15px;
+            padding: 5px 8px;
+            text-decoration: none;
+            transition: all .2s;
+        }
+        &:hover{
+            box-shadow: 0 2px 5px 2px rgba(0, 0, 0, 0.4);
+            
+        }
+    }
+}
+
+.notes{
+    //                ******************************************* uncomment
+    display: none;    
+    position: relative;
+    #text-notes{
+        margin: 15px 0;
+    }
+    .btn-sub{
+        position: absolute;
+        top: -45px;
+        left: 330px;
+    }
+}
+.last-note{
+   color: #04046a; 
+}
+
+.text-show{
+    display: block;
+}
+
+.header_3{
+    font-size: 25px;
+    padding: 5px;
+    color: #04046a;
+}
