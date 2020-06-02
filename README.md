@@ -1,14 +1,18 @@
-# Weather-Journal App Project
+# Travel App
 
-## Overview
-This project requires you to create an asynchronous web app that uses Web API and user data to dynamically update the UI. 
+This capstone project aims to give us the opportunity to put all of the skills we have learned into one project to build our own custom travel app. It is all done in a Webpack environment, using an Express server, and wrapped up with service workers.
 
-## Instructions
-This will require modifying the `server.js` file and the `website/app.js` file. You can see `index.html` for element references, and once you are finished with the project steps, you can use `style.css` to style your application to customized perfection.
+## How To Start
 
-## Project
-Starter code taken from Udacity FEND repository
-* I implemented all the functionality along with necessary changes to build this app.
-* I generated the OpenWeatherMap API and used it in this project.
-* I set the country as India (,in) to make the API calls, which can be changed as per the country code inside the `website/app.js` file.
-* To test the project, simply cd to this folder, run `node server.js` and visit `localhost:3000`.
+- Clone this repo
+- `cd` into your new folder and run `npm install` to install npm packages
+- Open a terminal at the root level of the project
+- Type `npm run build` to generate `dist` 
+- Type `npm run start` to run the server at port 8080
+- To run the server in development mode, type `npm run dev`
+- Type `npm run test` to run the test cases
+
+## Deploying
+
+I tried deploying the app on Netlify
+It's live at `https://naughty-brown-d13208.netlify.app/`
