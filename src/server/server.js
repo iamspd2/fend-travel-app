@@ -1,6 +1,5 @@
 // Setup empty JS object to act as endpoint for all routes
-const geoData = [];
-const weatherData = [];
+const data = [];
 
 // Require Express to run server and routes
 const express = require('express');
@@ -33,58 +32,29 @@ app.get('/', function (req, res) {
     
 })
 
-app.get('/allGeoData', getData);
-app.get('/WeatherData', getWeatherData);
+// Initialize function for GET request
+app.get('/getTrips', getData);
 
-// Callback functions to complete GET '/all'
+// Callback function to complete GET '/getTrips'
 function getData(req, res){
-    res.send(geoData)
+    res.send(data)
 }
 
-// Callback functions to complete GET '/all'
-function getWeatherData(req, res){
-    res.send(weatherData)
-}
-
-// Post Route
-app.post("/", function(req, res){
-    request(baseURL)
-})
-
-//app.post('/addGeoData', post1);
-app.post('/addWeatherData', post2);
+// Initialize function for POST request
+app.post('/postTrip', sendData);
 
 // Callback function for POST
-// function post1(req, res){       
-//     newEntry={
-//         lat: req.body.lat,
-//         lng: req.body.lng,
-//         country: req.body.country,
-//         city: req.body.city
-//     }
-//     geoData.push(newEntry)
-//     res.send(geoData)
-//     console.log(geoData);
-// }
-
-function post2(req, res){       
-    weatherEntry={
+function sendData(req, res){       
+    entry={
     	city: req.body.city,
     	country: req.body.country,
         high: req.body.high,
         low: req.body.low,
         desc: req.body.desc
     }
-    weatherData.push(weatherEntry)
-    res.send(weatherData)
-    console.log(weatherData);
+    data.push(entry)
+    res.send(data)
+    console.log(data);
 };
-
-
-// designates what port the app will listen to for incoming requests
-// app.listen(8080, function () {
-//     // console.log('Example app listening on port 8080!')
-// })
-
 
 module.exports.app = app;
