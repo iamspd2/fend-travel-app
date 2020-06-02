@@ -1,4 +1,4 @@
-import {app} from './index';
+import {app} from './server';
 const request = require('supertest');
 const express = require('express');
 

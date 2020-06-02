@@ -1,13 +1,14 @@
 const path = require('path');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
     entry: './src/client/index.js',
-    mode: 'development',
+    mode: 'production',
     output: {
-        path: path.resolve(__dirname, './dist'),
-        filename: 'main.js'
+        libraryTarget: 'var',
+        library: 'Client'
     },
     module: {
         rules: [
@@ -18,20 +19,7 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                use: ['style-loader', 
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                sourceMap: true
-                            }
-                        },
-                        {
-                            loader: 'sass-loader',
-                            options: {
-                                sourceMap: true
-                            }
-                        }
-                     ],
+                use: [ MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
             },
             {
                 test: /\.(png|jpe?g|gif|svg)$/i,
@@ -44,9 +32,16 @@ module.exports = {
     },
     plugins: [
         new HtmlWebPackPlugin({
-            template: "./src/client/html/index.html",
+            template: "./src/client/views/index.html",
             filename: "./index.html",
         }),
-        new CleanWebpackPlugin()
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // all options are optional
+            filename: '[name].css',
+            chunkFilename: '[id].css',
+            ignoreOrder: false, // Enable to remove warnings about conflicting order
+        }),
+        new WorkboxPlugin.GenerateSW()
     ]
 }

@@ -6,6 +6,9 @@ const pixabayBaseURL = `https://pixabay.com/api/${pixabayApiKey}&q=`
 const darkApiKey = 'ae6ef7c8ff0231dd4f01ee4108e6413b'
 const darkBaseURL = `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${darkApiKey}/`
 
+//API key for WeatherBit
+const wbURL = 'https://api.weatherbit.io/v2.0/forecast/daily'
+const wbKey = 'f2c967944f074f3da8bbd61a36ddb84d';
 
 // ########################      LOCATION    ################################
 const getLocation = async(baseURL, location) =>{
@@ -28,8 +31,8 @@ const getLocation = async(baseURL, location) =>{
       await postData('/addGeoData', { 
         lat:data.geonames[0].lat,
         lng:data.geonames[0].lng, 
-        countryName:data.geonames[0].countryName, 
-        city_country:data.geonames[0].name  
+        country:data.geonames[0].countryName, 
+        city:data.geonames[0].name  
       } )
       // show in UI
       
@@ -56,11 +59,16 @@ const getLocation = async(baseURL, location) =>{
     // latitude = document.getElementById('high').innerText;
     // longitude = document.getElementById('low').innerText;
     
-    const res = await fetch(darkBaseURL +  newData[newData.length - 1].lat + ',' + newData[newData.length - 1].lng );
-    const data = await res.json();
+    // const res = await fetch(darkBaseURL +  newData[newData.length - 1].lat + ',' + newData[newData.length - 1].lng );
+    const res = await fetch(wbURL+'?lat='+newData[newData.length - 1].lat+'&lon='+newData[newData.length - 1].lng+'&key='+wbKey);
+    const forecast = await res.json();
+
+    console.log(forecast);
 
     await postWeather('/addWeatherData', {
-      weather : data.daily.summary
+      high: forecast.data[0].high_temp,
+      low: forecast.data[0].low_temp,
+      desc: forecast.data[0].weather.description
     });
   
   }
@@ -115,7 +123,7 @@ const updateUI = async () => {
     const newData = await request.json();
 
     request = await fetch('/WeatherData');
-    const weathData = await request.json();
+    const w = await request.json();
   
     // console.log("New Data");
     // console.log(newData);
@@ -143,13 +151,13 @@ const updateUI = async () => {
     document.getElementById('days').innerHTML = `${difference_in_days}`
   
     
-    document.getElementsByClassName('city_country')[0].innerHTML = newData[newData.length - 1].city_country;
-    document.getElementsByClassName('city_country')[1].innerHTML = newData[newData.length - 1].city_country;
-    document.getElementById('countryCode').innerHTML = newData[newData.length - 1].countryName;
-    document.getElementById('high').innerHTML = newData[newData.length - 1].lat;
-    document.getElementById('low').innerHTML = newData[newData.length - 1].lng;
+    document.getElementsByClassName('city_country')[0].innerHTML = newData[newData.length - 1].city;
+    document.getElementsByClassName('city_country')[1].innerHTML = newData[newData.length - 1].city;
+    document.getElementById('countryCode').innerHTML = newData[newData.length - 1].country;
+    document.getElementById('high').innerHTML = w[w.length - 1].high;
+    document.getElementById('low').innerHTML = w[w.length - 1].low;
 
-    document.getElementById('weather').innerHTML = weathData[weathData.length -1].weather;
+    document.getElementById('weather').innerHTML = w[w.length - 1].desc;
     
   
     }catch(error){

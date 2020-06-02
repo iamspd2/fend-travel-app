@@ -59,8 +59,8 @@ function post1(req, res){
     newEntry={
         lat: req.body.lat,
         lng: req.body.lng,
-        countryName: req.body.countryName,
-        city_country: req.body.city_country
+        country: req.body.country,
+        city: req.body.city
     }
     geoData.push(newEntry)
     res.send(geoData)
@@ -69,7 +69,9 @@ function post1(req, res){
 
 function post2(req, res){       
     weatherEntry={
-        weather :req.body.weather
+        high: req.body.high,
+        low: req.body.low,
+        desc: req.body.desc
     }
     weatherData.push(weatherEntry)
     res.send(weatherData)
