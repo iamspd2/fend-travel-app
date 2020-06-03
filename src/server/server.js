@@ -1,5 +1,6 @@
 // Setup empty JS object to act as endpoint for all routes
 const data = [];
+let newEntry = {};
 
 // Require Express to run server and routes
 const express = require('express');
@@ -33,6 +34,14 @@ app.get('/', function (req, res) {
 })
 
 // Initialize function for GET request
+app.get('/getTrip', getEntry);
+
+// Callback function to complete GET '/getTrips'
+function getEntry(req, res){
+    res.send(newEntry)
+}
+
+// Initialize function for GET request
 app.get('/getTrips', getData);
 
 // Callback function to complete GET '/getTrips'
@@ -41,10 +50,10 @@ function getData(req, res){
 }
 
 // Initialize function for POST request
-app.post('/postTrip', sendData);
+app.post('/postTrip', sendEntry);
 
 // Callback function for POST
-function sendData(req, res){       
+function sendEntry(req, res){       
     entry={
     	city: req.body.city,
     	country: req.body.country,
@@ -54,9 +63,30 @@ function sendData(req, res){
         date: req.body.date,
         days: req.body.days
     }
+    newEntry = entry
+    //newEntry.push(entry)
+    res.send(newEntry)
+    console.log(newEntry);
+};
+
+app.post('/saveTrip', sendData);
+
+// Callback function for POST
+function sendData(req, res){       
+    // entry={
+    //     city: req.body.city,
+    //     country: req.body.country,
+    //     high: req.body.high,
+    //     low: req.body.low,
+    //     desc: req.body.desc,
+    //     date: req.body.date,
+    //     days: req.body.days
+    // }
+    entry = newEntry
     data.push(entry)
     res.send(data)
     console.log(data);
 };
+
 
 module.exports.app = app;

@@ -141,38 +141,18 @@ const postData = async ( url = '', data = {}) => {
   // UI UPDATE
 const updateUI = async () => {
   
-  let request = await fetch('/getTrips');
-  const w = await request.json();
-  const l = w.length;
-  console.log(w);
+  let request = await fetch('/getTrip');
+  const d = await request.json();
+  const l = d.length;
+  console.log(d);
   
   try{
-    // Create a new date instance dynamically with JS 
-    // function randomDate(start, end) {
-    //   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-    // }
-    // let d = new Date();
-    // const departing = randomDate(new Date(2024, 2, 1), new Date((d.getMonth()+1)+'/'+ d.getDate()+'/'+ d.getFullYear()))
     
-    // // Today Date
-    // let newDate = new Date((d.getMonth()+1)+'/'+ d.getDate()+'/'+ d.getFullYear());
-    // console.log(departing,newDate);
-  
-    // //Calculate the difference in Time and in Days
-    // let differencie_in_time = (departing.getTime())-(newDate.getTime());
-    // let difference_in_days = Math.floor(differencie_in_time/(1000*3600*24));
-    
-    //#########################   update the UI    ############################################
-    // document.getElementById('date').innerHTML = `<h3>Today is: ${newDate.getDate()+'.'+(newDate.getMonth()+1)+'.'+ newDate.getFullYear()}</h3>`;
-    // document.getElementById('trips-time').innerHTML = `<h3>Departing: ${ departing.getDate()+'.'+(departing.getMonth()+1)+'.'+ departing.getFullYear()}</h3>`;  
-    // document.getElementById('days').innerHTML = `${difference_in_days}`
-  
-    document.getElementById('dest').innerHTML = `Destination: ${w[l-1].city}, ${w[l-1].country}`;
-    document.getElementById('dept').innerHTML = `Departure: ${w[l-1].date}`;
-    document.getElementById('days').innerHTML = `${w[l-1].city} is ${w[l-1].days} days away`;
-    document.getElementById('temp').innerHTML = `High: ${w[l-1].high}, Low: ${w[l-1].low}`;
-    document.getElementById('desc').innerHTML = w[l-1].desc;
-    
+    document.getElementById('dest').innerHTML = `Destination: ${d.city}, ${d.country}`;
+    document.getElementById('dept').innerHTML = `Departure: ${d.date}`;
+    document.getElementById('days').innerHTML = `${d.city} is ${d.days} days away`;
+    document.getElementById('temp').innerHTML = `High: ${d.high}, Low: ${d.low}`;
+    document.getElementById('desc').innerHTML = d.desc;
   
   }
   catch(error){
@@ -180,4 +160,27 @@ const updateUI = async () => {
   }
 }
 
-export{ getData, getImage}
+const updateUI2 = async () => {
+
+  await postData('/saveTrip', {});
+
+  let request = await fetch('/getTrips');
+  const w = await request.json();
+  const l = w.length;
+  console.log(w);
+  
+  // try{
+    
+  //   document.getElementById('dest').innerHTML = `Destination: ${w[l-1].city}, ${w[l-1].country}`;
+  //   document.getElementById('dept').innerHTML = `Departure: ${w[l-1].date}`;
+  //   document.getElementById('days').innerHTML = `${w[l-1].city} is ${w[l-1].days} days away`;
+  //   document.getElementById('temp').innerHTML = `High: ${w[l-1].high}, Low: ${w[l-1].low}`;
+  //   document.getElementById('desc').innerHTML = w[l-1].desc;
+  
+  // }
+  // catch(error){
+  //   console.log("error", error);
+  // }
+}
+
+export{ getData, getImage, updateUI2 }

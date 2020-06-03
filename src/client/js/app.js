@@ -1,6 +1,8 @@
 import { planTrip } from '../js/planTrip'
+import { saveTrip } from '../js/planTrip'
 
 document.getElementById('generate').addEventListener('click', planTrip);
+document.getElementById('save').addEventListener('click', saveTrip);
 
 // ###################       Add Note      ##################################
 function toggleNotes() {

@@ -1,5 +1,6 @@
 import { getData } from '../js/functions'
 import { getImage } from '../js/functions'
+import { updateUI2 } from '../js/functions'
 
 const apiKey = 'username=dominika_ongoing';
 const baseURL = `http://api.geonames.org/searchJSON?${apiKey}&`;
@@ -14,4 +15,9 @@ function planTrip(e) {
     getImage(pixabayBaseURL, destination);
 };
 
+function saveTrip(e) {
+	updateUI2();
+};
+
 export { planTrip }
+export { saveTrip }
