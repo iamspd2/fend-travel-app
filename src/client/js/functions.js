@@ -13,7 +13,6 @@ const getData = async(baseURL, location) => {
 
   if(country.length > 2) {
     document.getElementById('zip').style.border = '1px solid red';
-    document.getElementById('zip_error').style.display = 'block';
 
   }
   else {
@@ -29,7 +28,6 @@ const getData = async(baseURL, location) => {
     const cityName = data.geonames[0].name;
     const countryName = data.geonames[0].countryName;
 
-    document.getElementById('zip_error').style.display = 'none';
     document.getElementById('zip').style.border='none';
       
     await getWeather(lat,lon,cityName,countryName);
@@ -42,7 +40,7 @@ const getImage = async ( pixabayBaseURL, location ) => {
   const city = location.split(',')[0];
   const res = await fetch(pixabayBaseURL +  city );
   const data = await res.json();
-  var image = document.getElementById('img-trip');
+  var image = document.getElementById('thumb');
   image.src = data.hits[0].largeImageURL;
 }
 
@@ -89,6 +87,7 @@ const updateUI = async () => {
   
   let request = await fetch('/getTrips');
   const w = await request.json();
+  const l = w.length;
   console.log(w);
   
   try{
@@ -108,17 +107,15 @@ const updateUI = async () => {
     let difference_in_days = Math.floor(differencie_in_time/(1000*3600*24));
     
     //#########################   update the UI    ############################################
-    document.getElementById('date').innerHTML = `<h3>Today is: ${newDate.getDate()+'.'+(newDate.getMonth()+1)+'.'+ newDate.getFullYear()}</h3>`;
-    document.getElementById('trips-time').innerHTML = `<h3>Departing: ${ departing.getDate()+'.'+(departing.getMonth()+1)+'.'+ departing.getFullYear()}</h3>`;  
-    document.getElementById('days').innerHTML = `${difference_in_days}`
+    // document.getElementById('date').innerHTML = `<h3>Today is: ${newDate.getDate()+'.'+(newDate.getMonth()+1)+'.'+ newDate.getFullYear()}</h3>`;
+    // document.getElementById('trips-time').innerHTML = `<h3>Departing: ${ departing.getDate()+'.'+(departing.getMonth()+1)+'.'+ departing.getFullYear()}</h3>`;  
+    // document.getElementById('days').innerHTML = `${difference_in_days}`
   
-    document.getElementsByClassName('city_country')[0].innerHTML = w[w.length - 1].city;
-    document.getElementsByClassName('city_country')[1].innerHTML = w[w.length - 1].city;
-    document.getElementById('countryCode').innerHTML = w[w.length - 1].country;
-    document.getElementById('high').innerHTML = w[w.length - 1].high;
-    document.getElementById('low').innerHTML = w[w.length - 1].low;
-
-    document.getElementById('weather').innerHTML = w[w.length - 1].desc;
+    document.getElementById('dest').innerHTML = `Destination: ${w[l-1].city}, ${w[l-1].country}`;
+    document.getElementById('dept').innerHTML = `Departure: 02/02/2020`;
+    document.getElementById('days').innerHTML = `${w[l-1].city} is 20 days away`;
+    document.getElementById('temp').innerHTML = `High: ${w[l-1].high}, Low: ${w[l-1].low}`;
+    document.getElementById('desc').innerHTML = w[l-1].desc;
     
   
   }

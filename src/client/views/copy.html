@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Travel Planner</title>
+        <link rel="shortcut icon" href="">
+    </head>
+
+    <body>
+            <header>
+                <div class="header-title">
+                <h1>Travel Planner</h1>
+                </div>
+                
+            </header>
+       
+            <div id = "app">
+                
+                 <div class ="holder city">
+                     <p id="zip_error">Please use the city name and country code!</p>
+                  <label for="zip">Enter city and country code here</label>
+                  <input class="input-city" type="text" name="zip" id="zip" placeholder="London,uk">
+                  <button id="generate" class="btn btn-search" name="submit" type="submit">search </button>
+                
+                </div> 
+                <div class="img-trip">
+                    <img id="img-trip" class="image-trip" alt="trip photo">
+                </div>
+                <div class ="trips">
+                    <br>
+                    <h3 class="trips-location">My trip to: <span class="city_country"></span>, <span id="countryCode"></span></h3>
+                    <div id="trips-time" class="trips-time"></div>
+                    <div id = "date"></div> 
+                    <div class="header_3"><span class="city_country"></span> is <span id="days">-</span> days away!</div>
+        
+                    <button id="save generate" class="btn btn-save" name="submit" type="submit"> save trip </button>
+                    <button id="remove" class="btn btn-remove" name="submit" type="submit"> remove trip </button>
+                    <div class ="holder entry">
+                        
+                        <br>
+                        
+                        <h3 class = "title">Typical weather for then is:</h3>
+                        <div id = "entryHolder">
+                            <div class="entryHolder">High: <span id = "high"> -</span></div>
+                            <div  class="entryHolder">Low: <span id = "low"> - </span></div>
+                            <div  id="weather"></div>
+                            <div id = "description" class="entryHolder"></div>
+
+                      </div>
+                  </div>
+                </div>
+                <div class="add-notes">
+                    <a id="btn-note" href="#">+ add notes </a>
+                </div>
+                <div class="notes">
+                    <p>Write your note:</p>
+                    <textarea name="notes" type="text" id="text-notes" maxlength="500" cols="60" rows="9"></textarea>
+                    <button id="text-submit-btn" class="btn btn-save btn-sub" type="submit">Add</button>   
+                </div>
+                <div id="last-note" class="last-note"></div> 
+
+            </div>
+
+            
+
+        <script>
+            // Check that service workers are supported
+            if ('serviceWorker' in navigator) {
+                // Use the window load event to keep the page load performant
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/service-worker.js');
+                });
+            }
+        </script>
+    </body>
+</html>
