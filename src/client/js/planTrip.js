@@ -8,9 +8,10 @@ const pixabayApiKey = '?key=16855830-a7ff092bfdb95676fe9ebf73a'
 const pixabayBaseURL = `https://pixabay.com/api/${pixabayApiKey}&q=`
 
 function planTrip(e) {
-	const country = document.getElementById('zip').value;
-    getData(baseURL, country);
-    getImage(pixabayBaseURL, country);
+	const destination = document.getElementById('zip').value;
+	const date = document.getElementById('date').value;
+    getData(baseURL, destination, date);
+    getImage(pixabayBaseURL, destination);
 };
 
 export { planTrip }

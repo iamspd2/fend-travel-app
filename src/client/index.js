@@ -12,5 +12,5 @@ import './styles/base.scss'
 
 import img from './media/dreamTravel.jpg';
 
-const image = document.getElementById('img-trip');
+const image = document.getElementById('thumb');
 image.src = img;

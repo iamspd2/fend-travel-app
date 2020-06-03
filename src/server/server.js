@@ -50,7 +50,9 @@ function sendData(req, res){
     	country: req.body.country,
         high: req.body.high,
         low: req.body.low,
-        desc: req.body.desc
+        desc: req.body.desc,
+        date: req.body.date,
+        days: req.body.days
     }
     data.push(entry)
     res.send(data)
