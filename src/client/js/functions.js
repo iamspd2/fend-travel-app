@@ -1,3 +1,5 @@
+import { isValidDate, findDays } from './date'
+
 //API key for Pixabay
 const pixabayApiKey = '?key=16855830-a7ff092bfdb95676fe9ebf73a'
 const pixabayBaseURL = `https://pixabay.com/api/${pixabayApiKey}&q=`
@@ -6,61 +8,18 @@ const pixabayBaseURL = `https://pixabay.com/api/${pixabayApiKey}&q=`
 const wbURL = 'https://api.weatherbit.io/v2.0/forecast/daily'
 const wbKey = 'f2c967944f074f3da8bbd61a36ddb84d';
 
-// Validates that the input string is a valid date formatted as "mm/dd/yyyy"
-function isValidDate(dateString)
-{
-    // First check for the pattern
-    if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
-        return false;
-
-    // Parse the date parts to integers
-    var parts = dateString.split("/");
-    var day = parseInt(parts[1], 10);
-    var month = parseInt(parts[0], 10);
-    var year = parseInt(parts[2], 10);
-
-    // Check the ranges of month and year
-    if(year < 1000 || year > 3000 || month == 0 || month > 12)
-        return false;
-
-    var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
-
-    // Adjust for leap years
-    if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
-        monthLength[1] = 29;
-
-    // Check the range of the day
-    return day > 0 && day <= monthLength[month - 1];
-};
-
-function findDays(date) {
-  const da = date.split('/');
-  const d = da[0]; const m = da[1]; const y = da[2];
-  const departure_date = new Date(`${m}/${d}/${y}`);
-  const current_date = new Date(); 
-
-  // To calculate the time difference of two dates 
-  const time = departure_date.getTime() - current_date.getTime(); 
-
-  // To calculate the no. of days between two dates 
-  const days = time / (1000 * 3600 * 24); 
-
-  //To display the final no. of days (result) 
-  console.log(days);
-  return Number(Math.round(days));
-}
-
-// ########################      LOCATION    ################################
+// Function to get all the data for the given searched location
 const getData = async(baseURL, location, date) => {
   const city = location.split(',')[0].trim();
   const country = location.split(',')[1].trim();
 
-  // if(isValidDate(date.trim()) == false){
-  //   alert('Please check your departure date!');
-  //   return;
-  // } 
+  if(isValidDate(date.trim()) == false){
+    alert('Please check your departure date!');
+    return;
+  } 
 
   if(country.length > 2) {
+    alert('Please check your country code!')
     document.getElementById('zip').style.border = '1px solid red';
   }
   else {
@@ -82,16 +41,20 @@ const getData = async(baseURL, location, date) => {
   }    
 }
   
-  // ########################      IMAGE    ################################
+// Function to get the image URL from Pixabay
 const getImage = async ( pixabayBaseURL, location ) => {
   const city = location.split(',')[0];
   const res = await fetch(pixabayBaseURL +  city );
   const data = await res.json();
+  console.log(data);
   var image = document.getElementById('thumb');
-  image.src = data.hits[0].largeImageURL;
+  if (data.total !=0)
+    image.src = data.hits[0].largeImageURL;
+  else
+    image.src = './public/img.jpg';
 }
 
-  // ########################      Weather    ################################
+// Function to get the weather forecast from WeatherBit
 const getWeather = async( lat, lon, city, country, date ) => {
   const res = await fetch(`${wbURL}?lat=${lat}&lon=${lon}&key=${wbKey}`);
   const forecast = await res.json();
@@ -117,8 +80,7 @@ const getWeather = async( lat, lon, city, country, date ) => {
   });
 }
 
-  // ########################      postWeather    ################################
-
+// Function to post complete data about the trip
 const postData = async ( url = '', data = {}) => {
   console.log('postWeather :',data);      
         
@@ -139,7 +101,8 @@ const postData = async ( url = '', data = {}) => {
     console.log("error Weather Data", error);
   }
 }
-  // UI UPDATE
+
+// Function to update the UI of the trip planning section
 const updateUI = async () => {
   
   let request = await fetch('/getTrip');
@@ -161,6 +124,7 @@ const updateUI = async () => {
   }
 }
 
+// Function to update the UI of the saved trips list
 const updateUI2 = async () => {
 
   await postData('/saveTrip', {});
@@ -176,8 +140,6 @@ const updateUI2 = async () => {
     trip_str = trip_str.concat(`<div class="trip data">
         <h3>Destination: ${i.city}, ${i.country}</h3>
         <h3>Departure: ${i.date}</h3>
-        <h4>${i.city} is ${i.days} days away</h4>
-        <h4>Typical weather for then:</h4>
         <h4>High: ${i.high}, Low: ${i.low}</h4>
         <h4>${i.desc}</h4>
       </div><br><br>`);
@@ -188,4 +150,4 @@ const updateUI2 = async () => {
 
 }
 
-export{ getData, getImage, updateUI2 }
+export{ isValidDate, getData, getImage, updateUI2 }

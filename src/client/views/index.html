@@ -11,19 +11,20 @@
     <header>
       <h1 id='brand'>SPD Travels</h1>
       <h3 id='tagline'>Plan Your Next Trip With Us!</h3>
-      <div class ="holdersds">
-            <label for="zip">Enter City and Country Code here</label>
-            <input type="text" id="zip" placeholder="London,uk">
-            <label for="date">Enter Departure Date</label>
-            <input type="text" id="date" placeholder="DD/MM/YYYY">
-            <button id="generate" class="btn btn-search" name="submit" type="submit">search </button>
+      <div class ="place">
+        <p>Find the country codes <a href="https://www.geonames.org/countries/" target="_blank">here!</a></p>
+        <label for="zip">Enter City and Country Code here</label>
+        <input type="text" id="zip" placeholder="London,uk">
+        <label for="date">Enter Departure Date</label>
+        <input type="text" id="date" placeholder="DD/MM/YYYY">
+        <button id="generate" name="submit" type="submit">search </button>
       </div>
     </header>
     <br>
     <content>
       <div class="row">
         <div class="col">
-          <img id='thumb' src="../media/dreamTravel.jpg" style="width:100%;height:100%"/>
+          <img id='thumb' src="./public/img.jpg" style="width:100%;height:100%"/>
         </div>
         <div class="col data">
           <h2 id='dest'></h2>
@@ -39,5 +40,14 @@
       <div id='trips'></div>
     </content>
   </div>
+  <script>
+    // Check that service workers are supported
+    if ('serviceWorker' in navigator) {
+        // Use the window load event to keep the page load performant
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js');
+        });
+    }
+  </script>
 </body>
 </html>

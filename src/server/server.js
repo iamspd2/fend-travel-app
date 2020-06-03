@@ -23,10 +23,6 @@ app.use(cors());
 // Initialize the main project folder
 app.use(express.static('dist'));
 
-// Spin up the server
-const port = 8080;
-const server = app.listen(port, ()=>{ console.log(`server running on port:${port}`)});
-
 // Initialize all route with a callback function
 app.get('/', function (req, res) {
     res.status(200).sendFile(path.resolve(__dirname, 'dist/index.html'))
@@ -36,24 +32,24 @@ app.get('/', function (req, res) {
 // Initialize function for GET request
 app.get('/getTrip', getEntry);
 
-// Callback function to complete GET '/getTrips'
+// Callback function to complete GET '/getTrip'
 function getEntry(req, res){
     res.send(newEntry)
 }
 
 // Initialize function for GET request
-app.get('/getTrips', getData);
+app.get('/getTrips', getTrips);
 
 // Callback function to complete GET '/getTrips'
-function getData(req, res){
+function getTrips(req, res){
     res.send(data)
 }
 
-// Initialize function for POST request
+// Initialize function for POST request of current entry
 app.post('/postTrip', sendEntry);
 
 // Callback function for POST
-function sendEntry(req, res){       
+function sendEntry(req, res) {       
     entry={
     	city: req.body.city,
     	country: req.body.country,
@@ -69,24 +65,19 @@ function sendEntry(req, res){
     console.log(newEntry);
 };
 
+// Initialize function for POST request to save trip
 app.post('/saveTrip', sendData);
 
 // Callback function for POST
-function sendData(req, res){       
-    // entry={
-    //     city: req.body.city,
-    //     country: req.body.country,
-    //     high: req.body.high,
-    //     low: req.body.low,
-    //     desc: req.body.desc,
-    //     date: req.body.date,
-    //     days: req.body.days
-    // }
+function sendData(req, res) {
     entry = newEntry
     data.push(entry)
     res.send(data)
     console.log(data);
 };
 
+// Spin up the server
+const port = 8080;
+const server = app.listen(port, ()=>{ console.log(`server running on port:${port}`)});
 
 module.exports.app = app;

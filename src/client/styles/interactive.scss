@@ -1,0 +1,28 @@
+#generate{
+    color: white;
+    background-color: #4CAF50;
+}
+
+#generate:hover {
+    background-color: #3e8e41;
+}
+
+.but {
+    height: 40px;
+    width: 90px;
+    margin-top: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    color: white;
+    background-color: #4CAF50
+}
+
+.but:hover {
+    background-color: #3e8e41;
+}
+
+#planned{
+    text-align: center;
+    color: white;
+}
