@@ -12,7 +12,7 @@ function planTrip(e) {
 	const destination = document.getElementById('zip').value;
 	const date = document.getElementById('date').value;
     getData(baseURL, destination, date);
-    getImage(pixabayBaseURL, destination);
+    //getImage(pixabayBaseURL, destination);
 };
 
 function saveTrip(e) {

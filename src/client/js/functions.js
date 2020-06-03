@@ -77,6 +77,7 @@ const getData = async(baseURL, location, date) => {
     const countryName = data.geonames[0].countryName;
       
     await getWeather(lat,lon,cityName,countryName,date);
+    await getImage(pixabayBaseURL,location);
     await updateUI();
   }    
 }
@@ -168,19 +169,23 @@ const updateUI2 = async () => {
   const w = await request.json();
   const l = w.length;
   console.log(w);
-  
-  // try{
-    
-  //   document.getElementById('dest').innerHTML = `Destination: ${w[l-1].city}, ${w[l-1].country}`;
-  //   document.getElementById('dept').innerHTML = `Departure: ${w[l-1].date}`;
-  //   document.getElementById('days').innerHTML = `${w[l-1].city} is ${w[l-1].days} days away`;
-  //   document.getElementById('temp').innerHTML = `High: ${w[l-1].high}, Low: ${w[l-1].low}`;
-  //   document.getElementById('desc').innerHTML = w[l-1].desc;
-  
-  // }
-  // catch(error){
-  //   console.log("error", error);
-  // }
+  let i;
+  let trip_str='';
+
+  for(i of w) {
+    trip_str = trip_str.concat(`<div class="trip data">
+        <h3>Destination: ${i.city}, ${i.country}</h3>
+        <h3>Departure: ${i.date}</h3>
+        <h4>${i.city} is ${i.days} days away</h4>
+        <h4>Typical weather for then:</h4>
+        <h4>High: ${i.high}, Low: ${i.low}</h4>
+        <h4>${i.desc}</h4>
+      </div><br><br>`);
+  }
+
+  console.log(trip_str);
+  document.getElementById('trips').innerHTML = trip_str;
+
 }
 
 export{ getData, getImage, updateUI2 }
